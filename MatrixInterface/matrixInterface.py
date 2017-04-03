@@ -1,10 +1,22 @@
 import spidev
 import time
+from time import strftime
 spi = spidev.SpiDev()
 spi.open(0, 0)
 spi.lsbfirst = False
 spi.xfer([0x0C, 0x01])
 spi.xfer([0x0B, 0xFF])
+
+def clearScreen():
+  spi.xfer([0x0F, 0x00])
+  spi.xfer([0x0F, 0x00])
+  spi.xfer([0x0F, 0x00])
+  spi.xfer([0x0F, 0x00])
+  for i in range(4):
+    for j in range(9):
+      spi.xfer([j , 0x00])
+
+clearScreen()
 
 while(True):
   for i in range(24):
