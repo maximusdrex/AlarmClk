@@ -7,6 +7,14 @@ spi.lsbfirst = False
 spi.xfer([0x0C, 0x01])
 spi.xfer([0x0B, 0xFF])
 
+NO_OP = [0, 0]
+
+def sendBytes(adress, data):
+  spi.xfer2([adress, data])
+
+def sendByteList(datalist):
+  spi.xfer2(datalist)
+
 def clearScreen():
   spi.xfer([0x0F, 0x00])
   spi.xfer([0x0F, 0x00])
@@ -55,3 +63,5 @@ def binaryClock():
       spi.xfer([0x01, int(strftime('%S'))])
       print(strftime('%H:%M:%S'))
       time.sleep(1)
+
+binaryClock()
