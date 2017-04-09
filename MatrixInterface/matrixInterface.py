@@ -20,53 +20,20 @@ def sendToMatrix(matrix, adress, data):
     sendByteList(NO_OP*(NUM_MATRICES - matrix) + [adress, data] + NO_OP*(matrix-1))
 
 def clearScreen():
-    spi.xfer([0x0F, 0x00])
-    spi.xfer([0x0F, 0x00])
-    spi.xfer([0x0F, 0x00])
-    spi.xfer([0x0F, 0x00])
-    for i in range(4):
-        for j in range(9):
-            spi.xfer([j , 0x00])
+    sendByteList([0x0F, 0x00]*4)
+    for j in range(9):
+        sendByteList([j , 0x00]*4)
 
 #clear before running
 clearScreen()
 
-def binaryStopwatch():
-    while(True):
-        for i in range(24):
-            spi.xfer([0x03, 0])
-            spi.xfer([0x03, 0])
-            spi.xfer([0x03, 0])
-            spi.xfer([0x03, i])
-            for j in range(60):
-                spi.xfer([0x02, 0])
-                spi.xfer([0x02, 0])
-                spi.xfer([0x02, 0])
-                spi.xfer([0x02, j])
-                for k in range(60):
-                    spi.xfer([0x01, 0])
-                    spi.xfer([0x01, 0])
-                    spi.xfer([0x01, 0])
-                    spi.xfer([0x01, k])
-                    print("hr: " + str(i) + "; min: " + str(j) + "; sec: " + str(k))
-                    time.sleep(1)
 
 def binaryClock():
     while(True):
-      spi.xfer([0x03, 0])
-      spi.xfer([0x03, 0])
-      spi.xfer([0x03, 0])
-      spi.xfer([0x03, int(strftime('%H'))])
-      spi.xfer([0x02, 0])
-      spi.xfer([0x02, 0])
-      spi.xfer([0x02, 0])
-      spi.xfer([0x02, int(strftime('%M'))])
-      spi.xfer([0x01, 0])
-      spi.xfer([0x01, 0])
-      spi.xfer([0x01, 0])
-      spi.xfer([0x01, int(strftime('%S'))])
+      sendToMatrix(1, 0x03, int(strftime('%H')))
+      sendToMatrix(1, 0x02, int(strftime('%M')))
+      sendToMatrix(1, 0x01, int(strftime('%S')))
       print(strftime('%H:%M:%S'))
       time.sleep(1)
 
-sendToMatrix(2, 0x01, 0x0F)
-sendToMatrix(4, 0x01, 0x05)
+binaryClock()
