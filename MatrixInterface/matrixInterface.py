@@ -21,12 +21,12 @@ def sendToMatrix(matrix, adress, data):
 
 def displayRow(matrix, adress, data):
     code = 0
-    for i in range(0, len(data) - 1):
+    for i in range(0, len(data)):
         code += data[i] * (2**i)
     sendToMatrix(matrix, adress, code)
 
 def displayMatrix(matrix, data):
-
+    print("error")
 
 def clearScreen():
     sendByteList([0x0F, 0x00]*4)
@@ -44,4 +44,6 @@ def binaryClock():
       sendToMatrix(1, 0x01, int(strftime('%S')))
       print(strftime('%H:%M:%S'))
       time.sleep(1)
+
+displayRow(1, 0x01, [0, 1, 1, 0, 0, 1, 1, 1])
 
