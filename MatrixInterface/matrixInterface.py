@@ -27,7 +27,7 @@ def displayRow(matrix, adress, data):
 
 def displayMatrix(matrix, data):
     for i in range(0, len(data)):
-        displayRow(data[i])
+        displayRow(matrix, i+1, data[i])
 
 def clearScreen():
     sendByteList([0x0F, 0x00]*4)
