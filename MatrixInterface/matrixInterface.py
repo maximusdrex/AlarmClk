@@ -4,8 +4,8 @@ from time import strftime
 spi = spidev.SpiDev()
 spi.open(0, 0)
 spi.lsbfirst = False
-spi.xfer([0x0C, 0x01])
-spi.xfer([0x0B, 0xFF])
+spi.xfer2([0x0C, 0x01])
+spi.xfer2([0x0B, 0xFF])
 
 NUM_MATRICES = 4
 NO_OP = [0, 0]
@@ -18,6 +18,15 @@ def sendByteList(datalist):
 
 def sendToMatrix(matrix, adress, data):
     sendByteList(NO_OP*(NUM_MATRICES - matrix) + [adress, data] + NO_OP*(matrix-1))
+
+def displayRow(matrix, adress, data):
+    code = 0
+    for i in range(0, len(data) - 1):
+        code += data[i] * (2**i)
+    sendToMatrix(matrix, adress, code)
+
+def displayMatrix(matrix, data):
+
 
 def clearScreen():
     sendByteList([0x0F, 0x00]*4)
@@ -36,4 +45,3 @@ def binaryClock():
       print(strftime('%H:%M:%S'))
       time.sleep(1)
 
-binaryClock()
