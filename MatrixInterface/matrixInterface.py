@@ -26,7 +26,8 @@ def displayRow(matrix, adress, data):
     sendToMatrix(matrix, adress, code)
 
 def displayMatrix(matrix, data):
-    print("error")
+    for i in range(0, len(data)):
+        displayRow(data[i])
 
 def clearScreen():
     sendByteList([0x0F, 0x00]*4)
